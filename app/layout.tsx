@@ -5,28 +5,35 @@ import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Anime Vault",
-  description: "Your favorite anime, all in one place.",
+	title: "Anime Vault",
+	description: "Your favorite anime, all in one place.",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={dmSans.className}>
-        <main className="max-w-7xl mx-auto bg-[#0F1117]">
-          <Hero />
-          {children}
-          <Footer />
-        </main>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className={dmSans.className}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="dark"
+					enableSystem
+					disableTransitionOnChange>
+					<main className="max-w-7xl mx-auto bg-[#0F1117]">
+						<Hero />
+						{children}
+						<Footer />
+					</main>
+				</ThemeProvider>
+			</body>
+		</html>
+	);
 }
