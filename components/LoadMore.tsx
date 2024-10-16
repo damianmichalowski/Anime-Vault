@@ -8,18 +8,27 @@ import AnimeCard, { AnimeProp } from "./AnimeCard";
 
 let page = 2;
 
-function LoadMore({ filter }: { filter: string }) {
+function LoadMore({ filter, order }: { filter: string; order: string }) {
 	const { ref, inView } = useInView();
 	const [data, setData] = useState<AnimeProp[]>([]);
 
 	useEffect(() => {
 		if (inView) {
-			fetchAnime(page, filter).then((res) => {
-				setData([...data, ...res]);
-				page++;
-			});
+			fetchAnime(page, filter, order)
+				.then((res) => {
+					setData([...data, ...res]);
+					page++;
+				})
+				.catch((error) => {
+					console.error("Error fetching anime:", error);
+				});
 		}
 	}, [inView, data]);
+
+	useEffect(() => {
+		page = 2;
+		setData([]);
+	}, [filter, order]);
 
 	return (
 		<>
@@ -30,20 +39,19 @@ function LoadMore({ filter }: { filter: string }) {
 							<AnimeCard anime={item} key={index} index={index} />
 						))}
 					</section>
-
-					<section className="flex justify-center items-center w-full">
-						<div ref={ref}>
-							<Image
-								src="./spinner.svg"
-								alt="spinner"
-								width={56}
-								height={56}
-								className="object-contain"
-							/>
-						</div>
-					</section>
 				</>
 			)}
+			<section className="flex justify-center items-center w-full">
+				<div ref={ref}>
+					<Image
+						src="./spinner.svg"
+						alt="spinner"
+						width={56}
+						height={56}
+						className="object-contain"
+					/>
+				</div>
+			</section>
 		</>
 	);
 }

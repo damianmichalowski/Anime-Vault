@@ -2,14 +2,19 @@
 
 import AnimeCard, { AnimeProp } from "@/components/AnimeCard";
 
-export const fetchAnime = async (page: number, filter?: string) => {
-	
-	const url = filter ? `https://shikimori.one/api/animes?page=${page}&limit=8&order=popularity&search=${filter}` : `https://shikimori.one/api/animes?page=${page}&limit=8&order=popularity`
+export const fetchAnime = async (
+	page: number,
+	filter?: string,
+	order?: string
+) => {
+	const url = `https://shikimori.one/api/animes?page=${page}&limit=8&search=${filter}&order=${order}`;
+
+	console.log(url);
 
 	const response = await fetch(url);
 
 	const data: AnimeProp[] = await response.json();
 
-	console.log(data);
+	//console.log(data);
 	return data;
 };
